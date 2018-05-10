@@ -64,6 +64,22 @@ describe('K.case', () => {
     expect(result).toBe(expected);
   });
 
+  it('should be able to take a multiple when `or` and `and` clauses, also alias', () => {
+    const expected = `(CASE WHEN column=1 OR column_two=3 AND column_three=2 THEN 1 WHEN column=2 THEN 2 ELSE 0 END) AS COL`;
+
+    const result = K.queryBuilder()
+      .when('column', '=', 1)
+      .orWhen('column_two', '=', 3)
+      .andWhen('column_three', '=', 2)
+      .thenElse(1)
+      .when('column', '=', 2)
+      .thenElse(2, 0)
+      .as('COL')
+      .toQuery();
+
+    expect(result).toBe(expected);
+  });
+
   it('should be able to nest kase statements', () => {
     const expected = `(CASE WHEN column=1 OR column_two=3 THEN (CASE WHEN column=2 THEN 2 ELSE 5 END) ELSE 0 END)`;
 
@@ -76,6 +92,24 @@ describe('K.case', () => {
           .thenElse(2, 5)
       )
       .else(0)
+      .toQuery();
+
+    expect(result).toBe(expected);
+  });
+
+  it('should be able to nest kase statements, with alias', () => {
+    const expected = `(CASE WHEN column=1 OR column_two=3 THEN (CASE WHEN column=2 THEN 2 ELSE 5 END) ELSE 0 END) AS COL`;
+
+    const result = K.queryBuilder()
+      .when('column', '=', 1)
+      .orWhen('column_two', '=', 3)
+      .thenElse(
+        K.queryBuilder()
+          .when('column', '=', 2)
+          .thenElse(2, 5)
+      )
+      .else(0)
+      .as('COL')
       .toQuery();
 
     expect(result).toBe(expected);

@@ -1,6 +1,6 @@
 {
   "name": "knex-case",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "⚙️ A Knex.js _plugin_ to add case statement support",
   "main": "index.js",
   "author": "Eric Adamski <er.adamski@gmail.com>",

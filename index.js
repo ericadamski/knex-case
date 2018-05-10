@@ -4,6 +4,12 @@ const QueryBuilder = require('knex/lib/query/builder');
 
 const kase = require('./src/kase');
 
+const as = function as(name) {
+  this.sql += ` AS ${name}`;
+
+  return this;
+};
+
 const ext = {
   when(col, op, val) {
     (!this._kase || this._kase.q.length <= 2) && (this._kase = kase());
@@ -25,14 +31,15 @@ const ext = {
   thenElse(t, e) {
     const query = this._kase.thenElse(t, e);
 
-    if (typeof query === 'string') return this.client.raw(query);
+    if (typeof query === 'string')
+      return Object.assign(this.client.raw(query), { as });
 
     return this;
   },
   else(e) {
-    const query = this._kase.else(e);
-
-    return this.client.raw(query);
+    return Object.assign(this.client.raw(this._kase.else(e)), {
+      as,
+    });
   },
 };
 
