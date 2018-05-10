@@ -1,0 +1,23 @@
+{
+  "name": "knex-case",
+  "version": "1.0.0",
+  "description": "⚙️ A Knex.js _plugin_ to add case statement support",
+  "main": "index.js",
+  "author": "Eric Adamski <er.adamski@gmail.com>",
+  "license": "MIT",
+  "repository": "git@github.com:ericadamski/knex-case.git",
+  "scripts": {
+    "test": "jest",
+    "precommit": "pretty-quick --staged"
+  },
+  "peerDependencies": {
+    "knex": "^0.14.6"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "jest": "^22.4.3",
+    "knex": "^0.14.6",
+    "prettier": "^1.12.1",
+    "pretty-quick": "^1.4.1"
+  }
+}
