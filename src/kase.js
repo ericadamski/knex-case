@@ -1,8 +1,19 @@
 function when(op) {
   return function(column, operator, value) {
-    return `${(op && `${op}`) || 'WHEN'} ${column}${operator}${value}`;
+    return `${(op && `${op}`) || 'WHEN'} ${column}${operator}${formatValue(
+      value
+    )}`;
   };
 }
+
+const formatValue = v => {
+  if (typeof v === 'string') {
+    if (v.includes('CASE')) return v;
+
+    return `'${v}'`;
+  }
+  return v;
+};
 
 const or = when('OR');
 const and = when('AND');
@@ -30,8 +41,8 @@ function kase() {
     thenElse(t, e) {
       const hasE = e !== undefined;
 
-      k.q.push(`THEN ${t}`);
-      hasE && k.q.push(`ELSE ${e} END`);
+      k.q.push(`THEN ${formatValue(t)}`);
+      hasE && k.q.push(`ELSE ${formatValue(e)} END`);
 
       if (!hasE) return k;
 
@@ -41,7 +52,7 @@ function kase() {
       return str;
     },
     else(e) {
-      k.q.push(`ELSE ${e} END`);
+      k.q.push(`ELSE ${formatValue(e)} END`);
 
       const str = `(${k.q.join(' ')})`;
       k.q = [];
