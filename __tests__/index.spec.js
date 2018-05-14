@@ -151,6 +151,17 @@ describe('K.case', () => {
     });
 
     describe('thenElse values', () => {
+      it('should be able to handle string formulas', () => {
+        const expected = `(CASE WHEN column=1 THEN (i + am + eric) ELSE 0 END)`;
+
+        const result = K.queryBuilder()
+          .when('column', '=', 1)
+          .thenElse(K.raw('(i + am + eric)'), 0)
+          .toQuery();
+
+        expect(result).toBe(expected);
+      });
+
       it('should be able to handle string as a value', () => {
         const expected = `(CASE WHEN column='hello' THEN '1' ELSE '0' END)`;
 
