@@ -59,7 +59,7 @@ describe('.kase', () => {
         const expected = `(CASE WHEN column='' THEN 1 ELSE 0 END)`;
 
         const result = kase()
-          .when('column', '=', '')
+          .when('column', '=', `''`)
           .thenElse(1, 0);
 
         expect(result).toEqual(expected);
@@ -69,7 +69,7 @@ describe('.kase', () => {
         const expected = `(CASE WHEN column='hello' THEN 1 ELSE 0 END)`;
 
         const result = kase()
-          .when('column', '=', 'hello')
+          .when('column', '=', `'hello'`)
           .thenElse(1, 0);
 
         expect(result).toEqual(expected);
@@ -88,10 +88,10 @@ describe('.kase', () => {
 
     describe('thenElse values', () => {
       it('should be able to handle string as a value', () => {
-        const expected = `(CASE WHEN column='hello' THEN '1' ELSE '0' END)`;
+        const expected = `(CASE WHEN column='hello' THEN 1 ELSE 0 END)`;
 
         const result = kase()
-          .when('column', '=', 'hello')
+          .when('column', '=', `'hello'`)
           .thenElse('1', '0');
 
         expect(result).toEqual(expected);
@@ -120,7 +120,7 @@ describe('.kase', () => {
               .when('column', '=', 2)
               .thenElse(2, 5)
           )
-          .else('wow');
+          .else(`'wow'`);
 
         expect(result).toBe(expected);
       });
