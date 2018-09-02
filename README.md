@@ -53,6 +53,27 @@ const q = Knex.queryBuilder()
 console.log(q); // (CASE WHEN column=1 OR column=2 THEN 1 ELSE 0 END);
 ```
 
+#### Multiple Clauses
+
+```SQL
+(CASE WHEN column=1 THEN 1 WHEN column=2 THEN 2 ELSE 0 END)
+```
+
+```javascript
+require('knex-case');
+const Knex = require('knex')({ client: 'mssql' });
+
+const q = Knex.queryBuilder()
+  .when('column', '=', 1)
+  .thenElse(1)
+  .when('column', '=', 2)
+  .thenElse(2)
+  .else(0)
+  .toQuery();
+
+console.log(q); // (CASE WHEN column=1 THEN 1 WHEN column=2 THEN 2 ELSE 0 END);
+```
+
 #### Nested Simple
 
 ```SQL
